@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" type="image/jpg" href="burger2.jpg" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Truffle</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+
+</body>
+
+</html>
+<script type="module">
+
+  import navbar from "./components/navbar.js";
+
+  document.body.innerHTML = navbar();
+  import { getItem, appendFoodItems } from "./scripts/showitems.js";
+  //  console.log(" appendFoodItems:",  appendFoodItems);
+
+  let btn = document.getElementById("search")
+
+  btn.addEventListener("click", menu)
+
+  async function menu() {
+    let input = document.getElementById("searchFood").value;
+
+    let parent= document.getElementById("data")
+    parent.innerHTML = "";
+
+
+    try {
+      let res = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${input}`)
+      let data = await res.json();
+      console.log("data:", data);
+      
+      // let parent = document.getElementById("data");
+            appendFoodItems(data, parent);
+            console.log("response:", res);
+    }
+
+    catch (err) {
+      console.log("err:", err);
+    }
+  }
+
+
+  async function checkData() {
+        try {
+            let response = await getItem(`https://www.themealdb.com/api/json/v1/1/filter.php?a=Indian`);
+
+            let parent = document.getElementById("data");
+            appendFoodItems(response, parent);
+            console.log("response:", response);
+        }
+        catch (err) {
+            console.log("err:", err);
+        }
+    }
+    checkData();
+</script>
